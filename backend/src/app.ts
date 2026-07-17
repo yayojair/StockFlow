@@ -3,6 +3,7 @@ import auth_router from './modules/auth/auth.route';
 
 const app: Express = express();
 
+app.use(express.json());
 
 app.use('/auth', auth_router);
 
