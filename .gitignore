@@ -1,0 +1,28 @@
+# IDE
+.vscode/
+.idea/
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+coverage/
+
+# Angular cache
+.angular/
+
+# Temporary files
+tmp/
+temp/
