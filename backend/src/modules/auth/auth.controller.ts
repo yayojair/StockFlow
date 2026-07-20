@@ -5,10 +5,10 @@ import { type LoginResponse } from './dto/login.response';
 import { AppErrors } from '../../common/errors/app.error';
 
 
-export const login_controller = (req: Request, res: Response ) => {
+export const login_controller = async (req: Request, res: Response ) => {
   try {
     const login_request: LoginRequest = req.body;
-    const service: LoginResponse = AuthService.login_Service(login_request);
+    const service: LoginResponse = await AuthService.login_Service(login_request);
     res.status(200).json(service);
   } catch (error) {
     if(error instanceof AppErrors){

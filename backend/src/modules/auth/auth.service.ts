@@ -1,21 +1,51 @@
-import { type LoginRequest } from './dto/login.request';
-import { login_repository } from './auth.reposiroty';
+import bcrypt from 'bcryptjs';
 import { AppErrors } from '../../common/errors/app.error';
+import { Usuario } from '../../domain/usuario';
+import { login_repository } from './auth.reposiroty';
+import { type LoginRequest } from './dto/login.request';
+import { LoginResponse } from './dto/login.response';
 
 export class AuthService{
     
-    static login_Service (req: LoginRequest){ 
-        if(! this.revisa_password(req.password)){
-            throw new AppErrors("contraseña vacia", 400);
+    static async login_Service (req: LoginRequest):Promise<LoginResponse>{ 
+        const usuario =  await login_repository(req);
+        
+        if (!usuario) {
+            throw new AppErrors("Usuario no encontrado", 404);
         }
-        return login_repository(req);
+        
+        const verifica = await this.validar_password(req.password, usuario.password_hash);
+        
+        if(!verifica){
+            throw new AppErrors("contraseña incorrecta", 404); 
+        }
+        
+        return this.crear_login_response(usuario);
     }
 
-    private static revisa_password (texto:string | undefined | null){
-        if(!texto || texto.trim().length === 0){
+    private static password_vacio (texto:string | undefined | null){
+        
+    }
+
+    private static async validar_password (password:string, hash_password:string){
+        if(!password || password.trim().length === 0){
             return false;
         }
-        return true;
+
+        const verifica = await bcrypt.compare(password, hash_password);
+        return verifica;
+    }
+
+    private static crear_login_response(usuario:Usuario){
+        const datos: LoginResponse = {
+                    token: "",
+                    user: {
+                        id: Number(usuario.id),
+                        name: usuario.nombre,
+                        email: usuario.correo
+                    }    
+        };
+        return datos
     }
 }
 
