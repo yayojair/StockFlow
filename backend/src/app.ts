@@ -1,7 +1,13 @@
 import express, { type Express, type Request, type Response } from 'express';
+import cors from 'cors';
 import auth_router from './modules/auth/auth.route';
 
 const app: Express = express();
+
+app.use(cors({
+    origin: 'http://localhost:4200',
+    credentials: true
+}));
 
 app.use(express.json());
 
