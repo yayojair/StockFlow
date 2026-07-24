@@ -91,6 +91,7 @@ export class Login {
         next: (respuesta) => {
           this.isLoading = false;
           this.loginForm.enable()
+          console.log(respuesta);
         },
         error: (error_server) => {
           this.showMessage = true;

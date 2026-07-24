@@ -4,6 +4,7 @@ import { Usuario } from '../../domain/usuario';
 import { login_repository } from './auth.reposiroty';
 import { type LoginRequest } from './dto/login.request';
 import { LoginResponse } from './dto/login.response';
+import { genera_token, verificar } from '../../common/auth/jwt.service';
 
 export class AuthService{
     
@@ -37,8 +38,13 @@ export class AuthService{
     }
 
     private static crear_login_response(usuario:Usuario){
+        const token = genera_token({
+                sub: usuario.id,
+                email: usuario.correo
+        });
+
         const datos: LoginResponse = {
-                    token: "",
+                    token: token,
                     user: {
                         id: Number(usuario.id),
                         name: usuario.nombre,
