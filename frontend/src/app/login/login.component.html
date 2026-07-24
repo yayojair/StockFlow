@@ -1,6 +1,7 @@
 <div class="login-container">
 
-  <mat-card class="login-card"  [ngClass]="{ blur: isLoading }">
+  <mat-card class="login-card"  [ngClass]="{ blur: isLoading }" >
+
     <div class="title">
       <img src="{{ img }}" alt="Logo de la aplicación" />
       <h4>{{ title }}</h4>
@@ -55,7 +56,7 @@
             <mat-icon>{{ hide? 'visibility_off_outline' : 'visibility_outline' }}</mat-icon>
             </button>
 
-            @if (loginForm.get('password')?.hasError('password')) {
+            @if (loginForm.get('password')?.hasError('required')) {
               <mat-error>Por favor, ingrese una contraseña.</mat-error>
             }
           </mat-form-field>
@@ -76,14 +77,14 @@
   </mat-card>
 
   @if (message && showMessage) {
-    <div
+    <div id = "mensaje-error"
       [ngClass]="
         message.includes('inválidas') || message.includes('intentos')
           ? 'error-message'
           : 'success-message'
       "
     >
-      <button id="toggle" (click)="showMessage = false">x</button>
+      <button id="toggle" (click)="close_error()">x</button>
       <p>
         {{ message }}
       </p>

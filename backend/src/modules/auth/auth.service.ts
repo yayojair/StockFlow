@@ -11,13 +11,13 @@ export class AuthService{
         const usuario =  await login_repository(req);
         
         if (!usuario) {
-            throw new AppErrors("Usuario no encontrado", 404);
+            throw new AppErrors("Usuario no encontrado", 401);
         }
         
         const verifica = await this.validar_password(req.password, usuario.password_hash);
         
         if(!verifica){
-            throw new AppErrors("contraseña incorrecta", 404); 
+            throw new AppErrors("contraseña incorrecta", 401); 
         }
         
         return this.crear_login_response(usuario);

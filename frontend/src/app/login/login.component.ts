@@ -83,21 +83,29 @@ export class Login {
 
       //poner pagina load
       this.isLoading = true;
+      this.loginForm.disable();
 
       //obtener datos del formulario
       const datos = this.loginForm.value as LoginRequest;
       this.auth_service.login(datos).subscribe({
         next: (respuesta) => {
-          console.log('Datos recibidos con éxito:', respuesta); 
+          this.isLoading = false;
+          this.loginForm.enable()
         },
         error: (error_server) => {
-          console.error('Hubo un error en la petición:', error_server);
-        },
-        complete: () => {
-
+          this.showMessage = true;
+          this.message = error_server.message;
         }
       });;
 
     }
 
+    close_error(){
+      this.loginForm.enable();
+      this.isLoading = false;
+      this.showMessage = false;
+    }
+
 }
+
+

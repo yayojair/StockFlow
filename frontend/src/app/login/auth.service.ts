@@ -16,16 +16,14 @@ export class AuthService {
     public login(datos:LoginRequest): Observable<LoginResponse>{
         console.log("ingresa al authservice");
 
-        return this.http.post<LoginResponse>("http://localhost:3000/auth/login", datos);
-
-
+        return this.http.post<LoginResponse>("http://localhost:3000/auth/login", datos).pipe(
+            catchError((error:HttpErrorResponse) => this.handleAuthError(error))
+        );
     }
-
 
     private handleAuthError(error: HttpErrorResponse): Observable<never> {
 
         let errorMessage = 'Error desconocido en autenticación';
-
         if (error?.error instanceof ErrorEvent) {
             errorMessage = `Error: ${error.error.message}`;
         } else if (error) {
@@ -34,17 +32,13 @@ export class AuthService {
                     errorMessage = 'Credenciales inválidas';
                     break;
                 case 403:
-                errorMessage = 'Acceso no autorizado';
+                    errorMessage = 'Acceso no autorizado';
                     break;
-                case 0:
+                case 500:
                     errorMessage = 'No se pudo conectar con el servidor';
                     break;
                 default:
-                    if (error.error && typeof error.error === 'object' && error.error.message) {
-                        errorMessage = error.error.message;
-                    } else if (error.message) {
-                        errorMessage = error.message;
-                    }
+                    break;
             }
         }
 

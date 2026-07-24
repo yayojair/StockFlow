@@ -54,5 +54,20 @@
 .login-card.blur {
   filter: blur(5px);
   transition: filter 0.3s ease;
+  pointer-events: none;
 }
 
+#mensaje-error{
+    position: absolute;
+    width: auto;
+    height: auto;
+    background: #e2e8f0;
+    padding: 5px;
+    border-radius: 15px;
+    border: 2px solid rgb(18, 17, 17);
+
+}
+
+#mensaje-error > button{
+  border-radius: 5px;
+}
