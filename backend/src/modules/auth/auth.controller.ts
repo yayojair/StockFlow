@@ -1,8 +1,8 @@
-import { type Request, type Response, type NextFunction} from 'express';
-import { AuthService } from './auth.service';
-import { type LoginRequest } from './dto/login.request';
-import { type LoginResponse } from './dto/login.response';
+import { type Request, type Response } from 'express';
 import { AppErrors } from '../../common/errors/app.error';
+import { type LoginRequest } from '../dto/login.request';
+import { type LoginResponse } from '../dto/login.response';
+import { AuthService } from './auth.service';
 
 
 export const login_controller = async (req: Request, res: Response ) => {

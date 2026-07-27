@@ -1,10 +1,10 @@
 import bcrypt from 'bcryptjs';
+import { genera_token } from '../../common/auth/jwt.service';
 import { AppErrors } from '../../common/errors/app.error';
 import { Usuario } from '../../domain/usuario';
+import { type LoginRequest } from '../dto/login.request';
+import { LoginResponse } from '../dto/login.response';
 import { login_repository } from './auth.reposiroty';
-import { type LoginRequest } from './dto/login.request';
-import { LoginResponse } from './dto/login.response';
-import { genera_token, verificar } from '../../common/auth/jwt.service';
 
 export class AuthService{
     

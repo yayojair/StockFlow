@@ -2,13 +2,9 @@ import jwt from 'jsonwebtoken';
 import type { SignOptions } from "jsonwebtoken";
 import dotenv from 'dotenv';
 import { AppErrors } from '../errors/app.error';
+import { TokenUsuario } from './interfaces/token-user.interface';
 
 dotenv.config();
-
-interface TokenUsuario {
-    sub: number;
-    email: string;
-}
 
 if (!process.env.JWT_SECRET) {
     throw new AppErrors("Falta la variable JWT_SECRET", 500);
