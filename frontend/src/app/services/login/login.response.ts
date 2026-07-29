@@ -1,8 +1,10 @@
 export interface AuthLoginUser {
-  userId: string;
-  name: string;
-  email: string;
-  tokensCSRF: string;
+  token: string;
+  user: {
+      id: number;
+      name: string;
+      email: string
+  }
 }
 
 export interface LoginResponse{

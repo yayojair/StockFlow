@@ -2,7 +2,7 @@ import express, { type Express, type Request, type Response } from 'express';
 import cors from 'cors';
 
 import auth_router from './modules/auth/auth.route';
-import product_rout from './modules/product/product.route';
+import dashboard_rout from './modules/dashboard/dashboard.route';
 
 import { authMiddleware } from './middleware/auth.middleware';
 
@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use('/auth', auth_router);
 
-app.use('/product', authMiddleware, product_rout);
+app.use('/dashboard', authMiddleware, dashboard_rout);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');

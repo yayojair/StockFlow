@@ -8,12 +8,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
-import { LoginRequest } from './login.request';
-import { LoginResponse } from './login.response';
-
-import { AuthService} from './auth.service';
-
+import { LoginRequest } from '../../services/login/login.request';
+import { LoginResponse, AuthLoginUser } from '../../services/login/login.response';
+import { AuthService} from '../../services/login/auth.service';
+import { TokenService } from '../../core/storage/token.service';
+import { MessageError } from '../../layout/error/error.component'; 
 import { Router } from '@angular/router';
 
 
@@ -28,9 +27,8 @@ import { Router } from '@angular/router';
     MatButtonModule,
     CommonModule,
     ReactiveFormsModule,
-    //FadeInDirective,
+    MessageError,
     FormsModule,
-    //LoaderComponent,
     MatTooltipModule
   ],
   templateUrl: './login.component.html',
@@ -41,24 +39,25 @@ export class Login {
     private readonly fb = inject(FormBuilder);
     private readonly router = inject(Router);
     private readonly auth_service = inject(AuthService);
+    private readonly token_service = inject(TokenService);
 
     //valida que los campos no esten vacios
     loginForm: FormGroup;
 
-    title = '';
+    title:string = '';
 
     //mensaje error o informacion
-    message = '';
-    showMessage = false;
+    textoError:string = '';
+    mostrarError:boolean = false;
 
     //carga de pagina
     isLoading = true;
 
     //logo de la app
-    img = '';
+    img:string = '';
 
     //ocultar elementos html
-    hide = true;
+    hide:boolean = true;
 
     constructor() {
         this.title = 'StockFlow';
@@ -87,25 +86,29 @@ export class Login {
 
       //obtener datos del formulario
       const datos = this.loginForm.value as LoginRequest;
+
       this.auth_service.login(datos).subscribe({
-        next: (respuesta) => {
+
+        next: (respuesta : LoginResponse) => {
           this.isLoading = false;
           this.loginForm.enable()
-          console.log(respuesta);
+          this.token_service.guardarToken(respuesta.user.token);
+          this.router.navigate(['/dashboard']);
         },
         error: (error_server) => {
-          this.showMessage = true;
-          this.message = error_server.message;
+          this.mostrarError = true;
+          this.textoError = error_server.message;
         }
       });;
 
     }
 
-    close_error(){
+    cerrar_mensaje(){
       this.loginForm.enable();
       this.isLoading = false;
-      this.showMessage = false;
+      this.mostrarError = false;
     }
+    
 
 }
 

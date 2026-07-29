@@ -1,0 +1,8 @@
+@if (message && show_message) {
+    <div id = "mensaje-error">
+      <button id="toggle" (click)="close_error()">x</button>
+      <p>
+        {{ message }}
+      </p>
+    </div>
+}

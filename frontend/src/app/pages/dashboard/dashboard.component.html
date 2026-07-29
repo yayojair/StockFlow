@@ -1,0 +1,63 @@
+<div id="contain-nav">
+    <app-navbar></app-navbar>
+</div>
+
+<div id="contain-dashboard">
+
+    <div  id="contain-text">
+        <h2> Hola, {{ usuario }} 👋</h2>
+        <h3> Bienvenido nuevamente</h3>
+    </div>
+
+    <div id="contain-product">
+        <mat-card class="login-card">
+            <p>📦 {{total_productos}}</p>
+            <p>Productos</p>
+        </mat-card>
+        <mat-card class="login-card">
+            <p>⚠️ {{productos_porVencer}}</p>
+            <p>Por vencer</p>
+        </mat-card>
+        <mat-card class="login-card">
+            <p>❌ {{productos_vencidos}}</p>
+            <p>Vencidos</p>
+        </mat-card>
+
+    </div >
+
+    <div id="contain-product-ontime">
+        <mat-card class="login-card">
+            <table>
+                <caption> <h4>Productos próximos a vencer</h4> </caption>
+                <tr>
+                    <th>Productos</th>
+                    <th>Vencen</th>
+                </tr>
+                <tr *ngFor="let producto of productos_proximos">
+                    <td>
+                        ⚠️ {{producto.nombre}}
+                    </td>
+                    <td>
+                        Vence en {{producto.fecha_vencimiento}}
+                    </td>
+                </tr>
+            </table>
+        </mat-card>
+    </div>
+
+    <div id="contain-product-add">
+        <mat-card class="login-card">
+            <h4>Últimos productos agregados</h4>
+            <ul>
+                <li *ngFor = "let producto of ultimos_productos">
+                    <p>📦 {{producto}}</p>
+                </li>
+            </ul>
+        </mat-card>
+    </div>
+</div>
+
+<app-message-error>
+    [message]="textoError" 
+    [show_message]="mostrarError">
+  </app-message-error>

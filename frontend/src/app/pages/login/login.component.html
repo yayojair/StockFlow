@@ -76,20 +76,12 @@
     
   </mat-card>
 
-  @if (message && showMessage) {
-    <div id = "mensaje-error"
-      [ngClass]="
-        message.includes('inválidas') || message.includes('intentos')
-          ? 'error-message'
-          : 'success-message'
-      "
-    >
-      <button id="toggle" (click)="close_error()">x</button>
-      <p>
-        {{ message }}
-      </p>
-    </div>
-  }
+  <app-message-error
+    [message]="textoError" 
+    [show_message]="mostrarError"
+    (cerrar_message)="cerrar_mensaje()">
+
+  </app-message-error>
   <!-- Loader centrado -->
   <!-- <app-loader *ngIf="isLoading"></app-loader> -->
 </div>

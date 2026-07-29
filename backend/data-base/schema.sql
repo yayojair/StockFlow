@@ -8,15 +8,26 @@ CREATE TABLE usuarios (
     fecha_modificacion TIMESTAMP
 );
 
-CREATE TABLE producto(
-    id INTEGER  GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    tiempoVida INTEGER,
-    fecha_registro TIMESTAMP,
-    fecha_modificacion TIMESTAMP,
-    id_usuario INTEGER,
+CREATE TABLE productos (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
-    CONSTRAINT fk_user
+    nombre VARCHAR(255) NOT NULL,
+
+    categoria VARCHAR(100) NOT NULL,
+
+    cantidad INTEGER NOT NULL,
+
+    fecha_compra DATE NOT NULL,
+
+    fecha_vencimiento DATE NOT NULL,
+
+    fecha_registro TIMESTAMP DEFAULT NOW(),
+
+    fecha_modificacion TIMESTAMP DEFAULT NOW(),
+
+    id_usuario INTEGER NOT NULL,
+
+    CONSTRAINT fk_producto_usuario
         FOREIGN KEY (id_usuario)
         REFERENCES usuarios(id)
 );

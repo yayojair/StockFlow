@@ -1,22 +1,20 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-//import { CookieService } from 'ngx-cookie-service';
-import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 
-import { LoginRequest } from './login.request';
-import { LoginResponse } from './login.response';
+import { DashboardResponse } from './dashboard.response';
+
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class AuthService {
+export class DashboardService {
     private readonly http = inject(HttpClient);
 
-    public login(datos:LoginRequest): Observable<LoginResponse>{
-        console.log("ingresa al authservice");
-
-        return this.http.post<LoginResponse>("http://localhost:3000/auth/login", datos).pipe(
+    public obtenerDashboard():Observable<DashboardResponse>{
+        
+        return this.http.get<DashboardResponse>("http://localhost:3000/dashboard").pipe(
             catchError((error:HttpErrorResponse) => this.handleAuthError(error))
         );
     }
@@ -29,7 +27,7 @@ export class AuthService {
         } else if (error) {
             switch (error.status) {
                 case 401:
-                    errorMessage = 'Credenciales inválidas';
+                    errorMessage = 'Datos no encontrados';
                     break;
                 case 403:
                     errorMessage = 'Acceso no autorizado';
@@ -44,5 +42,4 @@ export class AuthService {
 
         return throwError(() => new Error(errorMessage));
     }
-
 }
