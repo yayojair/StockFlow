@@ -26,7 +26,7 @@ export class DashboardService {
             errorMessage = `Error: ${error.error.message}`;
         } else if (error) {
             switch (error.status) {
-                case 401:
+                case 404:
                     errorMessage = 'Datos no encontrados';
                     break;
                 case 403:

@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoginRequest } from '../../services/login/login.request';
 import { LoginResponse, AuthLoginUser } from '../../services/login/login.response';
 import { AuthService} from '../../services/login/auth.service';
-import { TokenService } from '../../core/storage/token.service';
+import { TokenService } from '../../core/token.service';
 import { MessageError } from '../../layout/error/error.component'; 
 import { Router } from '@angular/router';
 

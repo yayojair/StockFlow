@@ -22,7 +22,8 @@ export class AuthService {
 
     private handleAuthError(error: HttpErrorResponse): Observable<never> {
 
-        let errorMessage = 'Error desconocido en autenticación';
+        let errorMessage = 'Error desconocido';
+        console.log(error.status);
         if (error?.error instanceof ErrorEvent) {
             errorMessage = `Error: ${error.error.message}`;
         } else if (error) {
@@ -34,7 +35,10 @@ export class AuthService {
                     errorMessage = 'Acceso no autorizado';
                     break;
                 case 500:
-                    errorMessage = 'No se pudo conectar con el servidor';
+                    errorMessage = 'Error en el servidor';
+                    break;
+                case 0:
+                    errorMessage = "No se pudo conectar con el servidor";
                     break;
                 default:
                     break;
