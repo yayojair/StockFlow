@@ -1,0 +1,120 @@
+<div id="contain-nav">
+    <app-navbar></app-navbar>
+</div>
+
+<div class="crear-container">
+
+  <mat-card class="crear-card"  [ngClass]="{ blur: isLoading }" >
+
+    <div class="title">
+      <h2>{{ title }}</h2>
+    </div>
+
+    <form [formGroup]="crearForm" (ngSubmit)="onSubmit()">
+      <div id="crear-form-div">
+
+        <div class="sub-form-div">
+          <label class="nombre_lb" for="nombre">Nombre del producto</label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              id="nombre"
+              formControlName="nombre"
+              type="text"
+              placeholder="Producto"
+              required
+            />
+            @if (crearForm.get('nombre')?.hasError('required')) {
+              <mat-error>Por favor, ingrese un producto.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        
+        <div class="sub-form-div">
+          <label for="categoria">Categoria</label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              id="categoria"
+              formControlName="categoria"
+              type="text"
+              placeholder="Categoria"
+              required
+            />
+
+            @if (crearForm.get('cantidad')?.hasError('required')) {
+              <mat-error>Por favor, ingrese una categoria.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="sub-form-div">
+          <label for="cantidad">Cantidad</label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              id="cantidad"
+              formControlName="cantidad"
+              type="number"
+              placeholder="Cantidad"
+              required
+            />
+
+            @if (crearForm.get('cantidad')?.hasError('required')) {
+              <mat-error>Por favor, ingrese una cantidad.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="sub-form-div">
+          <label for="fecha-compra">Fecha de compra</label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              id="fecha-compra"
+              formControlName="fechaCompra"
+              type="date"
+              placeholder="Fecha de compra"
+              required
+            />
+
+            @if (crearForm.get('fechaCompra')?.hasError('required')) {
+              <mat-error>Por favor, ingrese una fecha de compra.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="sub-form-div">
+          <label for="fecha-vencimiento">Fecha de vencimiento</label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              id="fecha-vencimiento"
+              formControlName="fechaVencimiento"
+              type="date"
+              placeholder="Fecha de vencimiento"
+              required
+            />
+
+            @if (crearForm.get('fechaVencimiento')?.hasError('required')) {
+              <mat-error>Por favor, ingrese una fecha de vencimiento.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div id="guardar-div">
+          <button class="button-login" type="submit" [disabled]="crearForm.invalid">Guardar</button>
+        </div>
+
+      </div>
+      
+    </form>
+
+  </mat-card>
+
+  <app-message-error
+    [message]="mensaje" 
+    [show_message]="mostrarMensaje"
+    (cerrar_message)="cerrar_mensaje()">
+  </app-message-error>
+</div>

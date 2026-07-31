@@ -1,8 +1,9 @@
-import express, { type Express, type Request, type Response } from 'express';
 import cors from 'cors';
+import express, { type Express, type Request, type Response } from 'express';
 
 import auth_router from './modules/auth/auth.route';
 import dashboard_rout from './modules/dashboard/dashboard.route';
+import producto_rout from './modules/productos/productos.route';
 
 import { authMiddleware } from './middleware/auth.middleware';
 
@@ -18,6 +19,8 @@ app.use(express.json());
 app.use('/auth', auth_router);
 
 app.use('/dashboard', authMiddleware, dashboard_rout);
+
+app.use('/productos', authMiddleware, producto_rout);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');

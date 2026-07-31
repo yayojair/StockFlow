@@ -1,0 +1,62 @@
+
+.crear-container{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.crear-card{
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0; /* Un borde gris muy fino */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.crear-card.blur {
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+  pointer-events: none;
+}
+
+#crear-form-div {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+}
+
+.sub-form-div{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.sub-form-div > label {
+    width: 100px;
+}
+
+.sub-form-div  input{
+    font-size: small;
+}
+
+#guardar-div{
+    width: 100%;
+}
+
+#guardar-div > button{
+    width: auto;
+    height: 30px;
+    border-radius: 12%;
+    background-color: #0052cc;
+    color: #ffffff;
+    &:hover{
+        background: #0266fa;
+    }
+}
+
+
+

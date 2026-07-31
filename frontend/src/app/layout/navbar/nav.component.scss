@@ -21,3 +21,13 @@ ul li a {
 ul li a:hover {
   background-color: #111111;
 }
+
+.sub-menu{
+  position: absolute;
+  display: none;
+}
+
+.activa-menu:hover .sub-menu{
+  display: flex;
+  flex-direction: column;
+}
