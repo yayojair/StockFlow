@@ -46,4 +46,14 @@ export const listarProductosRepository = async (id_user:number):Promise<ListarPr
     return respuesta.rows;
 }
 
+export const filtrarProductosRepository = async (id_user:number, busqueda:string):Promise<ListarProductosResponse[]> => {
+    const respuesta = await pool_db.query(
+        `SELECT id, nombre, categoria, cantidad, fecha_compra, fecha_vencimiento,fecha_registro, fecha_modificacion
+        FROM productos
+        WHERE id_usuario = $1 
+        AND nombre ILIKE $2
+        `,[id_user, `%${busqueda}%`]);
+    return respuesta.rows;
+}
+
 

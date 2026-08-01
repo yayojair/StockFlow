@@ -37,3 +37,19 @@ export const listarProducto= async (req: Request, res:Response) => {
     }
 }
 
+export const filtrarProducto= async (req: Request, res:Response) => {
+    try {
+        const user_id:number = req.user?.sub as number;
+        const busqueda:string = req.query.busqueda as string;
+        
+        const service:ListarProductosResponse[] = await ProductoService.filtrarProducto(user_id, busqueda);
+        return res.status(201).json(service);
+        
+    } catch (error) {
+        if(error instanceof AppErrors){
+            res.status(error.statusCode).json({error:error.message});
+        }else{
+            res.status(500).json({ error: "Error en el servidor" });
+        }
+    }
+}

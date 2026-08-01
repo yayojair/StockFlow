@@ -3,13 +3,13 @@
 }
 
 
-.busqueda-div > form{
+.busqueda-div {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 15px;
 }
 
-.busqueda-div > form input{
+.busqueda-div  input{
     width: 300px;
 }

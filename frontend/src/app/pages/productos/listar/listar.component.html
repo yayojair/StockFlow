@@ -11,11 +11,9 @@
     </div>
 
     <div class="busqueda-div">
-      <form>
         <label>Buscar Producto</label>
-        <input type="text" placeholder="Ingrese el nombre del producto" >
-        <button>Buscar</button>
-      </form>
+        <input type="text" placeholder="Ingrese el nombre del producto" 
+        matInput [formControl]="controlsForm" >
     </div>
     
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

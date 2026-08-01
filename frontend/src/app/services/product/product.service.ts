@@ -26,6 +26,12 @@ export class ProductService {
         );
     }
 
+    public filtrarProductos(busqueda:string):Observable<ListarProductosResponse[]>{
+        return this.http.get<ListarProductosResponse[]>(`http://localhost:3000/productos/nombre?busqueda=${busqueda}`).pipe(
+            catchError((error:HttpErrorResponse) => this.handleAuthError(error))
+        );
+    }
+
     private handleAuthError(error: HttpErrorResponse): Observable<never> {
 
         let errorMessage = 'Error desconocido';
