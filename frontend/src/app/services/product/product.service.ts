@@ -5,7 +5,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 
 import { CrearProductosRequest } from './productos.request';
 import { CrearProductoResponse } from './productos.response';
-
+import { ListarProductosResponse } from './productos.response';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +20,15 @@ export class ProductService {
         );
     }
 
+    public listarProductos():Observable<ListarProductosResponse[]>{
+        return this.http.get<ListarProductosResponse[]>("http://localhost:3000/productos/listar").pipe(
+            catchError((error:HttpErrorResponse) => this.handleAuthError(error))
+        );
+    }
+
     private handleAuthError(error: HttpErrorResponse): Observable<never> {
 
         let errorMessage = 'Error desconocido';
-        console.log(error.status);
         if (error?.error instanceof ErrorEvent) {
             errorMessage = `Error: ${error.error.message}`;
         } else if (error) {

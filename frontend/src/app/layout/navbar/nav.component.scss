@@ -25,6 +25,7 @@ ul li a:hover {
 .sub-menu{
   position: absolute;
   display: none;
+  z-index: 1000;
 }
 
 .activa-menu:hover .sub-menu{

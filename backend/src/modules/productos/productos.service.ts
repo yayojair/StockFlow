@@ -1,6 +1,6 @@
 import { CrearProductosRequest } from "../dto/producto/producto.request";
-import { CrearProductosResponse } from "../dto/producto/producto.response";
-import { crearProductoRepository } from "./productos.repository";
+import { CrearProductosResponse, ListarProductosResponse } from "../dto/producto/producto.response";
+import { crearProductoRepository, listarProductosRepository } from "./productos.repository";
 
 export class ProductoService{
 
@@ -8,5 +8,10 @@ export class ProductoService{
         await crearProductoRepository(user_id, producto);
         
         return {message : "Producto creado correctamente"};
+    }
+
+    static async listarProducto(user_id:number):Promise<ListarProductosResponse[]>{
+        
+        return await listarProductosRepository(user_id);
     }
 }

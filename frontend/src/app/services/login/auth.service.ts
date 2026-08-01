@@ -23,7 +23,6 @@ export class AuthService {
     private handleAuthError(error: HttpErrorResponse): Observable<never> {
 
         let errorMessage = 'Error desconocido';
-        console.log(error.status);
         if (error?.error instanceof ErrorEvent) {
             errorMessage = `Error: ${error.error.message}`;
         } else if (error) {

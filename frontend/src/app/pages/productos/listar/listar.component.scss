@@ -1,0 +1,15 @@
+.title {
+    text-align: center;
+}
+
+
+.busqueda-div > form{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.busqueda-div > form input{
+    width: 300px;
+}

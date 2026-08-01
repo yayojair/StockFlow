@@ -5,3 +5,4 @@ export interface CrearProductosRequest {
     fechaCompra:Date;
     fechaVencimiento:Date;
 }
+
