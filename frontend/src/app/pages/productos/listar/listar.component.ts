@@ -50,7 +50,7 @@ export class ListarProductos implements OnInit {
     private readonly producto_service = inject(ProductService);
 
     title:string = '';
-    private producto_editar: ListarProductosResponse | null = null;
+    producto_seleccionado: ListarProductosResponse | null = null;
     dataSource: ListarProductosResponse[]=[];
     displayedColumns: string[] = 
     [
@@ -70,6 +70,8 @@ export class ListarProductos implements OnInit {
     editarForm: FormGroup;
     showEditar = false;
     isLoadingUpdate = false;
+    showEliminar = false;
+    isLoadingDelete = false; 
 
 
     constructor() {
@@ -84,11 +86,6 @@ export class ListarProductos implements OnInit {
         });
     }
 
-    ngAfterViewInit():void{
-      setTimeout(() => {
-        this.isLoading = false;
-      });
-    }
 
     ngOnInit():void {
       this.isLoading = true;
@@ -96,7 +93,7 @@ export class ListarProductos implements OnInit {
     }
 
     private cargarProductos(): void {
-
+      this.isLoading = true;
       this.producto_service.listarProductos().subscribe({
           next: respuesta => {
               this.dataSource = respuesta;
@@ -104,6 +101,7 @@ export class ListarProductos implements OnInit {
           },
           error: error => {
               this.mensajeCard(error.message);
+              this.isLoading = false;
           }
       });
     }
@@ -141,7 +139,7 @@ export class ListarProductos implements OnInit {
 
     mostrarCardEditar(producto: ListarProductosResponse): void {
       this.isLoading = true;
-      this.producto_editar = producto;
+      this.producto_seleccionado = producto;
       this.cargarEditarForm(producto);
       this.showEditar = true;
     }
@@ -167,7 +165,7 @@ export class ListarProductos implements OnInit {
       this.isLoadingUpdate = true;
       
       const datos = this.editarForm.value as ListarProductosResponse;
-      const id_producto = this.producto_editar?.id;
+      const id_producto = this.producto_seleccionado?.id;
 
       if(id_producto === undefined){
         this.mensajeCard("Error: No se pudo obtener el ID del producto a editar.");
@@ -201,6 +199,40 @@ export class ListarProductos implements OnInit {
       }, 1000);
       
     }
+
+    mostrarCardEliminar(producto: ListarProductosResponse): void {
+      this.producto_seleccionado = producto;
+      this.isLoading = true;
+      this.showEliminar = true;
+    } 
+
+    cancelarEliminar(): void {
+      this.showEliminar = false;
+      this.isLoading = false;
+    }
+
+    eliminarProducto(): void {
+      if(!this.producto_seleccionado){
+        this.mensajeCard("Error: No se pudo obtener el producto a eliminar.");
+        return;
+      }
+      const id_producto = this.producto_seleccionado.id;
+      this.isLoadingDelete = true;
+
+      this.producto_service.eliminarProducto(id_producto).subscribe({
+        next: (respuesta:ActualizarProductoResponse) => {
+          this.showEliminar = false;
+          this.mensajeCard(respuesta.message);
+          setTimeout(() => {
+            this.cargarProductos();
+          }, 1000);
+        },
+        error: (error) => {
+          this.showEliminar = false;
+          this.mensajeCard(error.message);
+        }
+      });
+    } 
 }
 
 

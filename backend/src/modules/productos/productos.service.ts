@@ -1,6 +1,6 @@
 import { CrearProductosRequest } from "../dto/producto/producto.request";
 import { CrearProductosResponse, ListarProductosResponse } from "../dto/producto/producto.response";
-import { crearProductoRepository, listarProductosRepository, filtrarProductosRepository, actualizarProductoRepository} from "./productos.repository";
+import { crearProductoRepository, listarProductosRepository, filtrarProductosRepository, actualizarProductoRepository, eliminarProductoRepository} from "./productos.repository";
 
 export class ProductoService{
 
@@ -21,5 +21,9 @@ export class ProductoService{
 
     static async actualizarProducto(id_producto:number, datos:ListarProductosResponse):Promise<string>{
         return await actualizarProductoRepository(id_producto, datos);
+    }
+
+    static async eliminarProducto(id_producto:number):Promise<string>{
+        return await eliminarProductoRepository(id_producto);
     }
 }

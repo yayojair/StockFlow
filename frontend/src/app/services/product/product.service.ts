@@ -38,6 +38,14 @@ export class ProductService {
         );
     }
 
+    public eliminarProducto(id_producto:number):Observable<ActualizarProductoResponse>{
+        return this.http.delete<ActualizarProductoResponse>(`http://localhost:3000/productos/eliminar?id_producto=${id_producto}`).pipe(
+            catchError((error:HttpErrorResponse) => this.handleAuthError(error))
+        );
+    }
+
+        
+
     private handleAuthError(error: HttpErrorResponse): Observable<never> {
 
         let errorMessage = 'Error desconocido';

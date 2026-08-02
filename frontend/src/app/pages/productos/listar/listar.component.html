@@ -59,8 +59,8 @@
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button mat-icon-button color="warn" title="Eliminar producto">
-              <mat-icon>delete</mat-icon>
+            <button mat-icon-button color="warn" title="Eliminar producto" (click)="mostrarCardEliminar(producto)">
+              <mat-icon>delete</mat-icon> 
             </button>
           </td>
         </ng-container>
@@ -79,6 +79,26 @@
         
       </app-producto-card>
     </div>
+  }
+
+  @if (showEliminar){
+    <div class="eliminar-container" [ngClass]="{ blur: isLoadingDelete }">
+      <mat-card class="eliminar-card">
+        <div class="title">
+          <h2>Eliminar Producto</h2>
+        </div>
+
+        <div class="mensaje-eliminar">
+          <p>¿Está seguro que desea eliminar el producto {{ producto_seleccionado?.nombre }}?</p>
+        </div>
+
+        <div class="botones-eliminar">
+          <button mat-raised-button color="warn" (click)="eliminarProducto()">Eliminar</button>
+          <button mat-raised-button color="primary" (click)="cancelarEliminar()">Cancelar</button>
+        </div>
+      </mat-card>
+    </div>
+
   }
   
 

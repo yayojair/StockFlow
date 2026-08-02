@@ -20,4 +20,26 @@
   pointer-events: none;
 }
 
+.eliminar-container{
+    width: auto;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+.eliminar-card{
+    padding: 20px;
+}
+.botones-eliminar{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+
 

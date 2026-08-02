@@ -78,4 +78,12 @@ export const actualizarProductoRepository = async (id_producto:number, datos:Lis
     return "Producto actualizado correctamente";
 }
 
-
+export const eliminarProductoRepository = async (id_producto:number):Promise<string> => {
+    await pool_db.query(
+        `DELETE FROM productos
+        WHERE id = $1
+        `,
+        [id_producto]
+    );
+    return "Producto eliminado correctamente";
+}   

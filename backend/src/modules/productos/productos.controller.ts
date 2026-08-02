@@ -71,3 +71,20 @@ export const actualizarProducto= async (req: Request, res:Response) => {
     }
     
 }
+
+export const eliminarProducto= async (req: Request, res:Response) => {
+    try{
+        const id_producto:number = req.query.id_producto as unknown as number;
+        const service:string = await ProductoService.eliminarProducto(id_producto);
+        return res.status(201).json({message:service});
+
+    }
+    catch (error) {
+        if(error instanceof AppErrors){
+            res.status(error.statusCode).json({error:error.message});
+        }else{
+            res.status(500).json({ error: "Error en el servidor" });
+        }
+    }
+    
+}
