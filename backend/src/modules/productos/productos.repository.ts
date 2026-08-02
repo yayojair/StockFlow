@@ -56,4 +56,26 @@ export const filtrarProductosRepository = async (id_user:number, busqueda:string
     return respuesta.rows;
 }
 
+export const actualizarProductoRepository = async (id_producto:number, datos:ListarProductosResponse):Promise<string> => {
+    await pool_db.query(
+        `UPDATE productos
+        SET nombre = $1,
+            categoria = $2,
+            cantidad = $3,
+            fecha_compra = $4,
+            fecha_vencimiento = $5,
+            fecha_modificacion = NOW()
+        WHERE id = $6
+        `,
+        [
+        datos.nombre,
+        datos.categoria,
+        datos.cantidad,
+        datos.fechaCompra,
+        datos.fechaVencimiento,
+        id_producto]
+    );
+    return "Producto actualizado correctamente";
+}
+
 

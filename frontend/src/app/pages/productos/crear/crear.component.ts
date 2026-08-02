@@ -16,6 +16,7 @@ import { CrearProductosRequest } from '../../../services/product/productos.reque
 import { Router } from '@angular/router';
 import { ProductService } from '../../../services/product/product.service';
 import { CrearProductoResponse } from '../../../services/product/productos.response';
+import {ProductoCardComponent} from '../../../layout/productos/producto.card.component';
 
 @Component({
   selector: 'app-crear-producto',
@@ -31,7 +32,8 @@ import { CrearProductoResponse } from '../../../services/product/productos.respo
     MessageError,
     FormsModule,
     MatTooltipModule,
-    NavbarComponent
+    NavbarComponent,
+    ProductoCardComponent
   ],
   templateUrl: './crear.component.html',
   styleUrl: './crear.component.scss'
@@ -43,9 +45,8 @@ export class CrearProductos {
     private readonly producto_service = inject(ProductService);
 
     //valida que los campos no esten vacios
+    
     crearForm: FormGroup;
-
-    title:string = '';
 
     //mensaje error o informacion
     mensaje:string = '';
@@ -54,8 +55,8 @@ export class CrearProductos {
     //carga de pagina
     isLoading = true;
 
+
     constructor() {
-        this.title = 'Crear Producto';
         this.crearForm = this.fb.group({
         nombre: ['', [Validators.required]],
         cantidad: ['', [Validators.required]],
@@ -71,7 +72,7 @@ export class CrearProductos {
       });
     }
 
-    onSubmit():void {
+    crearProducto():void {
       if(this.crearForm.invalid){
         this.crearForm.markAllAsTouched();
         return;

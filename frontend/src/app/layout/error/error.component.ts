@@ -18,6 +18,7 @@ export class MessageError {
     @Output() 
     cerrar_message = new EventEmitter<void>();
 
+    
     close_error(){
       this.cerrar_message.emit();
     }

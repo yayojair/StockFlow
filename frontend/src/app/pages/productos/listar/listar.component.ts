@@ -1,24 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'; 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'; 
 
 import { MessageError } from '../../../layout/error/error.component';
 import { NavbarComponent } from '../../../layout/navbar/nav.component';
-import { ListarProductosResponse } from '../../../services/product/productos.response';
+import { ActualizarProductoResponse, ListarProductosResponse } from '../../../services/product/productos.response';
 
-import { Router } from '@angular/router';
 import { ProductService } from '../../../services/product/product.service';
 import { MatTableModule } from '@angular/material/table';
+import { ProductoCardComponent } from '../../../layout/productos/producto.card.component';
+
+
 
 
 @Component({
@@ -29,14 +31,15 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
     MatInputModule,
     MatIconModule,
-    MatCheckboxModule,
     MatButtonModule,
+    MatTooltipModule,
+    MatCheckboxModule,
     CommonModule,
     ReactiveFormsModule,
     MessageError,
     FormsModule,
-    MatTooltipModule,
-    NavbarComponent
+    NavbarComponent,
+    ProductoCardComponent
   ],
   templateUrl: './listar.component.html',
   styleUrl: './listar.component.scss'
@@ -44,13 +47,10 @@ import { MatTableModule } from '@angular/material/table';
 export class ListarProductos implements OnInit {
 
     private readonly fb = inject(FormBuilder);
-    private readonly router = inject(Router);
     private readonly producto_service = inject(ProductService);
 
-    controlsForm = new FormControl('');
-
     title:string = '';
-
+    private producto_editar: ListarProductosResponse | null = null;
     dataSource: ListarProductosResponse[]=[];
     displayedColumns: string[] = 
     [
@@ -62,17 +62,26 @@ export class ListarProductos implements OnInit {
       'fechaVencimiento',
       'opciones'
     ];
+    isLoading = true;
+    controlsForm = new FormControl('');
 
-    //mensaje error o informacion
     mensaje:string = '';
     mostrarMensaje:boolean = false;
+    editarForm: FormGroup;
+    showEditar = false;
+    isLoadingUpdate = false;
 
-    //carga de pagina
-    isLoading = true;
 
     constructor() {
         this.title = 'Lista de Productos';
         this.escuchaBusqueda();
+        this.editarForm = this.fb.group({
+          nombre: ['', [Validators.required]],
+          cantidad: ['', [Validators.required]],
+          categoria: ['', [Validators.required]],
+          fechaCompra: ['', [Validators.required]],
+          fechaVencimiento: ['', [Validators.required]],
+        });
     }
 
     ngAfterViewInit():void{
@@ -86,12 +95,35 @@ export class ListarProductos implements OnInit {
       this.cargarProductos();
     }
 
-    cerrar_mensaje(){
+    private cargarProductos(): void {
+
+      this.producto_service.listarProductos().subscribe({
+          next: respuesta => {
+              this.dataSource = respuesta;
+              this.isLoading = false;
+          },
+          error: error => {
+              this.mensajeCard(error.message);
+          }
+      });
+    }
+
+    cerrarMensaje(){
       this.isLoading = false;
       this.mostrarMensaje = false;
     }
+
+    private escuchaBusqueda(): void {
+      this.controlsForm.valueChanges.pipe(
+          debounceTime(400),
+          distinctUntilChanged(),
+          takeUntilDestroyed()
+        ).subscribe(value => {
+          this.filtrarProductos(value || '');
+        });
+    }
     
-    filtrarProductos(busqueda:string):void {
+    private filtrarProductos(busqueda:string):void {
       if(!busqueda){
         this.cargarProductos();
         return;
@@ -101,37 +133,73 @@ export class ListarProductos implements OnInit {
           this.dataSource = respuesta;
           this.isLoading = false;
         },
-        error: (error_server) => {
-          this.mostrarMensaje = true;
-          this.mensaje = error_server.message;
-          this.isLoading = false;
+        error: (error) => {
+          this.mensajeCard(error.message);
         }
       });
     }
 
-    private cargarProductos(): void {
+    mostrarCardEditar(producto: ListarProductosResponse): void {
+      this.isLoading = true;
+      this.producto_editar = producto;
+      this.cargarEditarForm(producto);
+      this.showEditar = true;
+    }
 
-      this.producto_service.listarProductos().subscribe({
-          next: respuesta => {
-              this.dataSource = respuesta;
-              this.isLoading = false;
-          },
-          error: error => {
-              this.mensaje = error.message;
-              this.mostrarMensaje = true;
-              this.isLoading = false;
-          }
+    private cargarEditarForm(producto: ListarProductosResponse): void {
+      const fechaCompra = String(producto.fecha_compra).split('T')[0];
+      const fechaVencimiento = String(producto.fecha_vencimiento).split('T')[0];
+      this.editarForm.patchValue({
+        nombre: producto.nombre,
+        cantidad: producto.cantidad,
+        categoria: producto.categoria,
+        fechaCompra: fechaCompra,
+        fechaVencimiento: fechaVencimiento,
       });
     }
     
-    private escuchaBusqueda(): void {
-      this.controlsForm.valueChanges.pipe(
-          debounceTime(400),
-          distinctUntilChanged(),
-          takeUntilDestroyed()
-        ).subscribe(value => {
-          this.filtrarProductos(value || '');
-        });
+    editarProducto(): void {
+      if(this.editarForm.invalid){
+        this.editarForm.markAllAsTouched();
+        return;
+      }
+      this.editarForm.disable();
+      this.isLoadingUpdate = true;
+      
+      const datos = this.editarForm.value as ListarProductosResponse;
+      const id_producto = this.producto_editar?.id;
+
+      if(id_producto === undefined){
+        this.mensajeCard("Error: No se pudo obtener el ID del producto a editar.");
+        return;
+      }
+
+      this.producto_service.actualizarProducto(id_producto, datos).subscribe({
+        next: (respuesta:ActualizarProductoResponse) => {
+          this.mensajeCard(respuesta.message);
+          setTimeout(() => {
+            this.cargarProductos();
+          }, 1000);
+          
+          
+        },
+        error: (error) => {
+          this.mensajeCard(error.message);
+        }
+      });
+    }
+
+    private mensajeCard(message:string):void {
+      this.mensaje = message;
+      this.mostrarMensaje = true;
+      setTimeout(() => {
+        this.isLoading = false;
+        this.editarForm.enable();
+        this.isLoadingUpdate = false;
+        this.mostrarMensaje = false;
+        this.showEditar = false;
+      }, 1000);
+      
     }
 }
 

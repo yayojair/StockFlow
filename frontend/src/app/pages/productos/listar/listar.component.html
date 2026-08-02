@@ -55,7 +55,7 @@
               <mat-icon>visibility</mat-icon>
             </button>
 
-            <button mat-icon-button title="Editar producto">
+            <button mat-icon-button title="Editar producto" (click)="mostrarCardEditar(producto)">
               <mat-icon>edit</mat-icon>
             </button>
 
@@ -70,9 +70,21 @@
       </table>
   </mat-card>
 
+  @if (showEditar){
+    <div class="editar-container" [ngClass]="{ blur: isLoadingUpdate }">
+      <app-producto-card
+        [title]="'Editar Producto'"
+        [productoForm]="editarForm"
+        (onSubmitEvent)="editarProducto()">
+        
+      </app-producto-card>
+    </div>
+  }
+  
+
   <app-message-error
     [message]="mensaje" 
     [show_message]="mostrarMensaje"
-    (cerrar_message)="cerrar_mensaje()">
+    (cerrar_message)="cerrarMensaje()">
   </app-message-error>
 </div>

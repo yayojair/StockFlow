@@ -53,3 +53,21 @@ export const filtrarProducto= async (req: Request, res:Response) => {
         }
     }
 }
+
+export const actualizarProducto= async (req: Request, res:Response) => {
+    try{
+        const id_producto:number = req.query.id_producto as unknown as number;
+        const datos:ListarProductosResponse = req.body;
+        const service:string = await ProductoService.actualizarProducto(id_producto, datos);
+        return res.status(201).json({message:service});
+
+    }
+    catch (error) {
+        if(error instanceof AppErrors){
+            res.status(error.statusCode).json({error:error.message});
+        }else{
+            res.status(500).json({ error: "Error en el servidor" });
+        }
+    }
+    
+}

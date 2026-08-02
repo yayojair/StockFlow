@@ -5,7 +5,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 
 import { CrearProductosRequest } from './productos.request';
 import { CrearProductoResponse } from './productos.response';
-import { ListarProductosResponse } from './productos.response';
+import { ListarProductosResponse, ActualizarProductoResponse } from './productos.response';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,12 @@ export class ProductService {
 
     public filtrarProductos(busqueda:string):Observable<ListarProductosResponse[]>{
         return this.http.get<ListarProductosResponse[]>(`http://localhost:3000/productos/nombre?busqueda=${busqueda}`).pipe(
+            catchError((error:HttpErrorResponse) => this.handleAuthError(error))
+        );
+    }
+
+    public actualizarProducto(id_producto:number, datos:ListarProductosResponse):Observable<ActualizarProductoResponse>{
+        return this.http.put<ActualizarProductoResponse>(`http://localhost:3000/productos/actualizar?id_producto=${id_producto}`, datos).pipe(
             catchError((error:HttpErrorResponse) => this.handleAuthError(error))
         );
     }

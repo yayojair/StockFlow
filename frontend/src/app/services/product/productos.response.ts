@@ -11,8 +11,12 @@ export interface ListarProductosResponse {
     nombre:string;
     categoria:string;
     cantidad:number;
-    fechaCompra:Date;
-    fechaVencimiento:Date;
-    fechaRegistro:Date;
-    fechaModificacion:Date;
+    fecha_compra:Date;
+    fecha_vencimiento:Date;
+    fecha_registro:Date;
+    fecha_modificacion:Date;
+}
+
+export interface ActualizarProductoResponse{
+    message:string;
 }

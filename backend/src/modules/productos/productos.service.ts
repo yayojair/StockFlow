@@ -1,6 +1,6 @@
 import { CrearProductosRequest } from "../dto/producto/producto.request";
 import { CrearProductosResponse, ListarProductosResponse } from "../dto/producto/producto.response";
-import { crearProductoRepository, listarProductosRepository, filtrarProductosRepository } from "./productos.repository";
+import { crearProductoRepository, listarProductosRepository, filtrarProductosRepository, actualizarProductoRepository} from "./productos.repository";
 
 export class ProductoService{
 
@@ -17,5 +17,9 @@ export class ProductoService{
 
     static async filtrarProducto(user_id:number, busqueda:string):Promise<ListarProductosResponse[]>{
         return await filtrarProductosRepository(user_id, busqueda);
+    }
+
+    static async actualizarProducto(id_producto:number, datos:ListarProductosResponse):Promise<string>{
+        return await actualizarProductoRepository(id_producto, datos);
     }
 }

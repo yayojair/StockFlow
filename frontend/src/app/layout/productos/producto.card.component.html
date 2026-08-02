@@ -1,0 +1,112 @@
+
+<div class="producto-container">
+
+  <mat-card class="producto-card" >
+
+    <div class="title">
+      <h2>{{ title }}</h2>
+    </div>
+
+    <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+      <div id="producto-form-div">
+
+        <div class="sub-form-div">
+          <label class="nombre_lb" for="nombre">Nombre del producto</label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              id="nombre"
+              formControlName="nombre"
+              type="text"
+              placeholder="Producto"
+              required
+            />
+            @if (productoForm.get('nombre')?.hasError('required')) {
+              <mat-error>Por favor, ingrese un producto.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        
+        <div class="sub-form-div">
+          <label for="categoria">Categoria</label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              id="categoria"
+              formControlName="categoria"
+              type="text"
+              placeholder="Categoria"
+              required
+            />
+
+            @if (productoForm.get('categoria')?.hasError('required')) {
+              <mat-error>Por favor, ingrese una categoria.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="sub-form-div">
+          <label for="cantidad">Cantidad</label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              id="cantidad"
+              formControlName="cantidad"
+              type="number"
+              placeholder="Cantidad"
+              required
+            />
+
+            @if (productoForm.get('cantidad')?.hasError('required')) {
+              <mat-error>Por favor, ingrese una cantidad.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="sub-form-div">
+          <label for="fecha-compra">Fecha de compra</label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              id="fecha-compra"
+              formControlName="fechaCompra"
+              type="date"
+              placeholder="Fecha de compra"
+              required
+            />
+
+            @if (productoForm.get('fechaCompra')?.hasError('required')) {
+              <mat-error>Por favor, ingrese una fecha de compra.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="sub-form-div">
+          <label for="fecha-vencimiento">Fecha de vencimiento</label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              type="date"
+              id="fecha-vencimiento"
+              formControlName="fechaVencimiento"
+              placeholder="Fecha de vencimiento"
+              required
+            />
+
+            @if (productoForm.get('fechaVencimiento')?.hasError('required')) {
+              <mat-error>Por favor, ingrese una fecha de vencimiento.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div id="guardar-div">
+          <button class="button-login" type="submit" [disabled]="productoForm.invalid">Guardar</button>
+        </div>
+
+      </div>
+      
+    </form>
+
+  </mat-card>
+
+</div>
