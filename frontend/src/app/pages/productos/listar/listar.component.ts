@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { MessageError } from '../../../layout/error/error.component';
 import { NavbarComponent } from '../../../layout/navbar/nav.component';
-import { ActualizarProductoResponse, ListarProductosResponse } from '../../../services/product/productos.response';
+import { ActualizarProductoResponse, ListarProductosResponse,ProductoLit } from '../../../services/product/productos.response';
 
 import { ProductService } from '../../../services/product/product.service';
 import { MatTableModule } from '@angular/material/table';
@@ -41,6 +41,7 @@ import { ProductoCardComponent } from '../../../layout/productos/producto.card.c
     NavbarComponent,
     ProductoCardComponent
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './listar.component.html',
   styleUrl: './listar.component.scss'
 })
@@ -50,7 +51,7 @@ export class ListarProductos implements OnInit {
     private readonly producto_service = inject(ProductService);
 
     title:string = '';
-    producto_seleccionado: ListarProductosResponse | null = null;
+    producto_seleccionado: ListarProductosResponse | ProductoLit |null = null;
     dataSource: ListarProductosResponse[]=[];
     displayedColumns: string[] = 
     [
@@ -71,7 +72,8 @@ export class ListarProductos implements OnInit {
     showEditar = false;
     isLoadingUpdate = false;
     showEliminar = false;
-    isLoadingDelete = false; 
+    isLoadingDelete = false;
+    showInfo=false;
 
 
     constructor() {
@@ -145,8 +147,8 @@ export class ListarProductos implements OnInit {
     }
 
     private cargarEditarForm(producto: ListarProductosResponse): void {
-      const fechaCompra = String(producto.fecha_compra).split('T')[0];
-      const fechaVencimiento = String(producto.fecha_vencimiento).split('T')[0];
+      const fechaCompra = this.modificarFecha(producto.fecha_compra);
+      const fechaVencimiento = this.modificarFecha(producto.fecha_vencimiento);
       this.editarForm.patchValue({
         nombre: producto.nombre,
         cantidad: producto.cantidad,
@@ -155,7 +157,11 @@ export class ListarProductos implements OnInit {
         fechaVencimiento: fechaVencimiento,
       });
     }
-    
+
+    private modificarFecha(date:Date){
+      return String(date).split('T')[0];
+    }
+
     editarProducto(): void {
       if(this.editarForm.invalid){
         this.editarForm.markAllAsTouched();
@@ -185,6 +191,11 @@ export class ListarProductos implements OnInit {
           this.mensajeCard(error.message);
         }
       });
+    }
+
+    cerrarEditar(){
+      this.showEditar = false;
+      this.isLoading = false;
     }
 
     private mensajeCard(message:string):void {
@@ -232,7 +243,31 @@ export class ListarProductos implements OnInit {
           this.mensajeCard(error.message);
         }
       });
-    } 
+    }
+    mostrarCardInfoLit(producto:ListarProductosResponse){
+      this.isLoading = true;
+      this.showInfo = true;
+      this.producto_seleccionado = this.crearProductoLit(producto);
+    }
+
+    private crearProductoLit(producto:ListarProductosResponse){
+      const producto_lit : ProductoLit = {
+        id: producto.id,
+        nombre:producto.nombre,
+        categoria:producto.categoria,
+        cantidad:producto.cantidad,
+        fecha_compra:this.modificarFecha(producto.fecha_compra),
+        fecha_vencimiento:this.modificarFecha(producto.fecha_vencimiento),
+        fecha_registro:this.modificarFecha(producto.fecha_registro),
+        fecha_modificacion:this.modificarFecha(producto.fecha_modificacion)
+      }
+      return producto_lit;
+    }
+
+    cerrarCardLit(){
+      this.showInfo = false;
+      this.isLoading = false;
+    }
 }
 
 

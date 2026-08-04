@@ -53,9 +53,6 @@ export class Login {
     //carga de pagina
     isLoading = true;
 
-    //logo de la app
-    img:string = '';
-
     //ocultar elementos html
     hide:boolean = true;
 

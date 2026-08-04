@@ -46,6 +46,12 @@ export class ProductoCardComponent {
     @Output()
     onSubmitEvent = new EventEmitter<void>();
 
+    @Input()
+    showEditar = false;
+
+    @Output()
+    onCloseEvent = new EventEmitter<void>();
+
     constructor() {
         this.title = 'Crear Producto';
         this.productoForm = this.fb.group({
@@ -59,6 +65,11 @@ export class ProductoCardComponent {
     
     onSubmit(){
       this.onSubmitEvent.emit();
+    }
+
+    cerrarCard(){
+      console.log("ingreso");
+      this.onCloseEvent.emit();
     }
 }
 

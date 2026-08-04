@@ -20,3 +20,14 @@ export interface ListarProductosResponse {
 export interface ActualizarProductoResponse{
     message:string;
 }
+
+export interface ProductoLit{
+    id:number;
+    nombre:string;
+    categoria:string;
+    cantidad:number;
+    fecha_compra:string;
+    fecha_vencimiento:string;
+    fecha_registro:string;
+    fecha_modificacion:string
+}

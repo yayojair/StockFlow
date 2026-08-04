@@ -3,8 +3,11 @@
 
   <mat-card class="producto-card" >
 
-    <div class="title">
+    <div class="header"  [ngClass] = "{cardHeader : showEditar}">
       <h2>{{ title }}</h2>
+      @if(showEditar){
+        <button class="close-link" (click)="cerrarCard()">cerrar</button>
+      }
     </div>
 
     <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
