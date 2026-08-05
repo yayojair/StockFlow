@@ -32,15 +32,11 @@
   width: 100px;
 }
 
-#checkBox-div{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
+#button-div{
+  padding-bottom: 15px;
 }
 
-#checkBox-div > button {
+#button-div > button {
   width: auto;
   height: 30px;
   border-radius: 15%;

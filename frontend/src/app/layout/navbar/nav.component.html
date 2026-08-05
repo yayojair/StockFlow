@@ -7,7 +7,10 @@
                 <li><a routerLink="/productos/lista" routerLinkActive="activo">Listar</a></li>
             </ul>
         </li>
-        <li><a routerLink="/perfil" routerLinkActive="activo">Perfil</a></li>
-        <li><a routerLink="/cerrar-sesion" routerLinkActive="activo">Cerra sesion</a></li>
+        <li>
+            <a  routerLinkActive="activo">
+                <button (click)="cerrarSesion()">Cerra sesion</button>
+            </a>
+        </li>
     </ul>
 </nav>

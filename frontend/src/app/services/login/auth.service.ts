@@ -6,12 +6,22 @@ import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { LoginRequest } from './login.request';
 import { LoginResponse } from './login.response';
 
+import { TokenService } from '../../core/token.service';
+import { Router } from '@angular/router';
+
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
     private readonly http = inject(HttpClient);
+    private readonly token_service = inject(TokenService);
+    private readonly router = inject(Router);
+
+    public cerrarSesion(){
+        this.token_service.eliminarToken();
+        this.router.navigate(['/login']);
+    }
 
     public login(datos:LoginRequest): Observable<LoginResponse>{
 
